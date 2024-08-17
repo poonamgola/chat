@@ -7,6 +7,29 @@ from django.http import JsonResponse
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from .models import Thread
+from django.shortcuts import render
+from django.db.models import Q
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
+def search_profiles(request):
+    query = request.GET.get('q')  # Get the search query from the GET request
+    results = []
+    if query:
+        # Filter users based on the search query
+        results = User.objects.filter(
+            Q(username__icontains=query) |
+            Q(first_name__icontains=query) |
+            Q(last_name__icontains=query) |
+            Q(email__icontains=query)
+        )
+    else:
+        results = User.objects.filter(
+        )
+
+    return render(request, 'user-account-dashboard/messages.html', {'results': results, 'query': query})
+
 
 
 @login_required
@@ -239,17 +262,17 @@ def profile(request, username):
     }
     return render(request, 'user-account-dashboard/user-profile.html', context)
 
-@login_required
-def search_profiles(request):
-    query = request.GET.get('q')
-    results = User.objects.filter(
-        Q(full_name__icontains=query) |
-        Q(role__icontains=query) |
-        Q(company__icontains=query) |
-        Q(city__icontains=query) |
-        Q(zip_code__icontains=query)
-    )
-    return render(request, 'user-account-dashboard/messages.html', {'results': results, 'query': query})
+# @login_required
+# def search_profiles(request):
+#     query = request.GET.get('q')
+#     results = User.objects.filter(
+#         Q(full_name__icontains=query) |
+#         Q(role__icontains=query) |
+#         Q(company__icontains=query) |
+#         Q(city__icontains=query) |
+#         Q(zip_code__icontains=query)
+#     )
+#     return render(request, 'user-account-dashboard/messages.html', {'results': results, 'query': query})
 
 def search_users(request):
     query = request.GET.get('q', '')
