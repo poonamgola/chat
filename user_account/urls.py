@@ -21,4 +21,6 @@ urlpatterns = [
     # path('rooms/', views.rooms, name='rooms'),
     # path('<slug:slug>/',views.room,name='room'),
     # path('<str:room_name>/send/', views.send_message, name='send_message'),
+    path('search/', views.search_profiles, name='search_profiles'),
+
 ]

@@ -13,55 +13,38 @@
         <div class="col-xl-5">
             <form class="rounded position-relative" method="GET" action="{% url 'search_profiles' %}">
                 <input class="form-control pe-5" type="search" name="q" placeholder="Search" aria-label="Search" value="{{ query|default:'' }}">
-                <button class="btn border-0 px-3 py-0 position-absolute top-50 end-0 translate-middle-y" type="submit"><i class="fas fa-search fs-6"></i></button>
+                <button class="btn border-0 px-3 py-0 position-absolute top-50 end-0 translate-middle-y" type="submit">
+                    <i class="fas fa-search fs-6"></i>
+                </button>
             </form>
+            
         </div>
 
         <div class="col-sm-6 col-xl-3">
             <a href="{% url "chat" %}" class="btn btn-primary mb-0"><i class="bi bi-plus-lg me-2"></i>Chat</a>
         </div>
     </div>
-
     <div class="mt-3 border bg-white border-light shadow-sm py-1 rounded">
         {% if results %}
             {% for user in results %}
-            <a href="{% url 'chat' receiver_id=user.id %}" class="text-decoration-none text-reset item-link">
                 <div class="d-md-flex align-items-center rounded mb-2 p-2">
                     <div class="avatar avatar-lg position-relative mb-2 me-3">
+                        <!-- Add a placeholder image or actual user profile image if available -->
                         <img class="avatar-img rounded-circle border border-2 border-white" src="{{ user.profile_image.url }}" alt="Avatar">
                     </div>
                     <div class="mb-3 mb-md-0">
-                        <h6>{{ user.full_name }}</h6>
-                        <p>{{ user.company }}</p>
-                    </div>
-                    <div class="ms-auto d-md-flex align-items-center">
-                        <span class="btn btn-sm btn-link text-primary-hover mb-0">
-                            <i class="bi bi-three-dots fa-fw fs-5"></i>
-                        </span>
+                        <h6>{{ user.username }}</h6>
+                        <p>{{ user.first_name }} {{ user.last_name }}</p>
+                        <p>{{ user.email }}</p>
                     </div>
                 </div>
-            </a>
             {% endfor %}
         {% else %}
-            <a href="#" class="text-decoration-none text-reset item-link">
-                <div class="d-md-flex align-items-center rounded mb-2 p-2">
-                    <div class="avatar avatar-lg position-relative mb-2 me-3">
-                        <img class="avatar-img rounded-circle border border-2 border-white" src="{% static 'theme-assets/images/avatar/05.jpg' %}" alt="Avatar">
-                    </div>
-                    <div class="mb-3 mb-md-0">
-                        <h6>Abhishek Dubey</h6>
-                        <p>Connect with LinkedIn account for a personalized experience...</p>
-                    </div>
-                    <div class="ms-auto d-md-flex align-items-center">
-                        <p class="mb-0">11:10PM</p>
-                        <span class="btn btn-sm btn-link text-primary-hover mb-0">
-                            <i class="bi bi-three-dots fa-fw fs-5"></i>
-                        </span>
-                    </div>
-                </div>
-            </a>
+            <p>No users found.</p>
         {% endif %}
     </div>
+    
+    
+    
 </div>
-
 {% endblock UserMainContent %}
